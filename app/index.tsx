@@ -19,6 +19,7 @@ export default function Index() {
     }}
     >
       <Link href={"/data"}><Text>API CALL</Text></Link>
+      <Link href={"/data2"}><Text>API CALL 2 </Text></Link>
       <Button title="welcome"  onPress={()=> {setvisiable(true)}}/>
 
       

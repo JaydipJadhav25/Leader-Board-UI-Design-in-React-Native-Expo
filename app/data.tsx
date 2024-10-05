@@ -95,6 +95,7 @@ const MyComponent = () => {
         console.error(error);
         setLoading(false);
       });
+      
   }, []);
 
   if (loading) {

@@ -1,53 +1,76 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text , ActivityIndicator, ScrollView, FlatList, Switch, Alert, Button } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios';
 
-// Define your interface
-export interface DataInterface {
-  userId: number;
-  id: number;
-  title: string;
-  completed: boolean;
-}
+export default function data2() {
 
-const MyComponent = () => {
-  // Set your state with the correct type for the data
-  const [data, setData] = useState<DataInterface[]>([]);
-  const [loading, setLoading] = useState(true);
+    const[data , setData] = useState("");
+    const[loading , setloading] = useState(false);
+    const [Enable , setEnable]  = useState(false);
+  
+    // Toggle function
+    const toggle = (state : any)=>{
+      setEnable(state);
+    //   alert();
+    }
 
-  useEffect(() => {
-    // Fetch data and update the state
-    fetch('https://jsonplaceholder.typicode.com/todos')
-      .then((response) => response.json())
-      .then((json: DataInterface[]) => {
-        setData(json);  // Set the fetched data
-        setLoading(false);  // Stop the loading spinner
-      })
-      .catch((error) => {
-        console.error(error);
-        setLoading(false);
-      });
-  }, []);
+    const alert = ()=>{
 
-  if (loading) {
-    return <ActivityIndicator size="large" color="#0000ff" />;
-  }
+        Alert.alert(
+          "GeeksforGeeks",
+          "How are you!",
+          [
+            {
+              text: "Cancel",
+            },
+            {
+              text: "OK",
+            }
+          ]
+        );
+      }
+  
 
+    async function fetchdata(){
+        const res = await axios.get("https://jsonplaceholder.typicode.com/todos");
+        setData(res.data);
+        setloading(false);
+        console.log("res:::::::" , res.data);
+    }
+
+    useEffect(()=>{
+        setloading(true);
+      fetchdata();
+    },[])
+
+    if (loading) {
+        return <ActivityIndicator size="large" color="#0000ff" shouldRasterizeIOS/>;
+      }
   return (
-    <View>
-      {/* Use FlatList to render the fetched data */}
-      <FlatList
-      
-        data={data}
-        keyExtractor={item => item.id.toString()}  // Use 'id' as a unique key
-        renderItem={({ item }) => (
-          <View style={{ padding: 10 }}>
-            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{item.title}</Text>
-            <Text>Completed: {item.completed ? 'Yes' : 'No'}</Text>
-          </View>
-        )}
-      />
-    </View>
-  );
-};
+    <View style={{
+        flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    }}>
 
-export default MyComponent;
+<Switch
+        trackColor={{ false: "#43f746", true: "#63dff2" }}
+        thumbColor={Enable ? "#faf68c" : "#e243f7"}
+        onValueChange={toggle}
+        value={Enable}
+      />
+ 
+ <Button title={"Click me"} onPress={alert}/>
+
+
+   {
+    Enable ?      <FlatList
+    data={data}
+    keyExtractor={item => item.id.toString()}  // Use 'id' as a unique key
+    renderItem={(data) => <Text>{data.item.title}</Text>}
+    />  :  null 
+   }
+    </View>
+  )
+}
