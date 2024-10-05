@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Button, FlatList, Image, Modal, ScrollView, Text, View } from "react-native";
+import { Button, FlatList, Image, Modal, ScrollView, Text, View  } from "react-native";
 import {ReactNativeModal} from "react-native-modal";
+import { Link } from "expo-router";
 
 
 export default function Index() {
@@ -17,7 +18,8 @@ export default function Index() {
       alignItems : "center"
     }}
     >
-      <Button title="welcome" onPress={()=> {setvisiable(true)}}/>
+      <Link href={"/data"}><Text>API CALL</Text></Link>
+      <Button title="welcome"  onPress={()=> {setvisiable(true)}}/>
 
       
       <ReactNativeModal
